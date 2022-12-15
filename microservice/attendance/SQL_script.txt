@@ -1,0 +1,36 @@
+create database attendance;
+use attendance;
+
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS class;
+DROP TABLE IF EXISTS sections;
+CREATE TABLE sections(
+    call_no VARCHAR(128) PRIMARY KEY,
+    course_name VARCHAR(128) NOT NULL,
+    enrollment_number INT NOT NULL
+);
+
+CREATE TABLE class(
+    call_no VARCHAR(128),
+    date DATE,
+    attendance INT,
+    PRIMARY KEY (call_no, date),
+    FOREIGN KEY (call_no) REFERENCES sections(call_no)
+);
+
+CREATE TABLE students(
+    UNI varchar(128),
+    call_no varchar(128),
+    date DATE,
+    PRIMARY KEY (UNI, call_no, date),
+    FOREIGN KEY (call_no, date) REFERENCES class(call_no, date)
+);
+
+INSERT INTO sections(call_no, course_name, enrollment_number)
+VALUES('COMS4119','Computer Networks', 100);
+
+INSERT INTO class(call_no, date, attendance)
+VALUES ('COMS4119', '1997-2-13', 40)
+
+INSERT INTO students(UNI, call_no, date)
+VALUES ("yg2233", "COMS4119", "1997-2-13")
