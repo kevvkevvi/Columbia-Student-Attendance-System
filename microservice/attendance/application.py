@@ -22,8 +22,8 @@ class DateEncoder(json.JSONEncoder):
 
 
 @app.route("/api/sections", methods=["GET"])
-def get_all_sections():  # get all sections
-    result = DBResource().get_sections()
+def get_sections():  # get all sections or by query strings (pagination supported)
+    result = DBResource().get_sections(request.args.to_dict())
     if result:
         rsp = Response(json.dumps(result), status=200, content_type="application.json")
     else:
@@ -32,8 +32,8 @@ def get_all_sections():  # get all sections
 
 
 @app.route("/api/class", methods=["GET"])
-def get_all_classes():  # get all classes
-    result = DBResource().get_classes()
+def get_classes():  # get all classes or by query strings (pagination supported)
+    result = DBResource().get_classes(request.args.to_dict())
     if result:
         rsp = Response(json.dumps(result), status=200, content_type="application.json")
     else:
@@ -42,8 +42,8 @@ def get_all_classes():  # get all classes
 
 
 @app.route("/api/students", methods=["GET"])
-def get_all_students():  # get all students
-    result = DBResource().get_students()
+def get_students():  # get all students or by query strings (pagination supported)
+    result = DBResource().get_students(request.args.to_dict())
     if result:
         rsp = Response(json.dumps(result), status=200, content_type="application.json")
     else:
@@ -52,14 +52,13 @@ def get_all_students():  # get all students
 
 
 @app.route("/api/sections/<call_no>", methods=["GET"])
-def get_section_by_call_no(call_no):  # get section <call_no>'s course_name and enrollment
+def get_section(call_no):  # get section by primary key
     result = DBResource().get_section(call_no)
     if result:
         rsp = Response(json.dumps(result), status=200, content_type="application.json")
     else:
         rsp = Response("NOT FOUND", status=404, content_type="text/plain")
     return rsp
-
 
 @app.route("/api/sections/<call_no>/class/", methods=["GET"])
 def get_section_attendances(call_no):  # get section <call_no>'s classes' date and attendance
