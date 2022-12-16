@@ -24,20 +24,74 @@ class DBResource:
         cur = conn.cursor()
         return conn, cur
 
-    def get_sections(self):
-        sql = "SELECT * FROM sections"
+    def get_sections(self, dic):
+        call_no = dic["call_no"] if "call_no" in dic else None
+        course_name = dic["course_name"] if "course_name" in dic else None
+        enrollment_number = dic["enrollment_number"] if "enrollment_number" in dic else None
+        limit = dic["limit"] if "limit" in dic else None
+        offset = dic["offset"] if "offset" in dic else None
+        sql = "SELECT * FROM sections "
+        if call_no or course_name or enrollment_number:
+            sql += "where"
+            if call_no:
+                sql += " call_no='{}' and".format(call_no)
+            if course_name:
+                sql += " course_name='{}' and".format(course_name)
+            if enrollment_number:
+                sql += " enrollment_number={} and".format(enrollment_number)
+            sql = sql[:-3]
+        if limit:
+            sql += " LIMIT {}".format(limit)
+        if offset:
+            sql += " OFFSET {}".format(offset)
         res = self.cur.execute(sql)
         result = self.cur.fetchall()
         return result
 
     def get_classes(self):
+        call_no = dic["call_no"] if "call_no" in dic else None
+        date = dic["date"] if "date" in dic else None
+        attendance = dic["attendance"] if "attendance" in dic else None
+        limit = dic["limit"] if "limit" in dic else None
+        offset = dic["offset"] if "offset" in dic else None
         sql = "SELECT * FROM class"
+        if call_no or date or attendance:
+            sql += "where"
+            if call_no:
+                sql += " call_no='{}' and".format(call_no)
+            if date:
+                sql += " date='{}' and".format(date)
+            if attendance:
+                sql += " attendance={} and".format(attendance)
+            sql = sql[:-3]
+        if limit:
+            sql += " LIMIT {}".format(limit)
+        if offset:
+            sql += " OFFSET {}".format(offset)
         res = self.cur.execute(sql)
         result = self.cur.fetchone()
         return result
 
     def get_students(self):
+        call_no = dic["call_no"] if "call_no" in dic else None
+        date = dic["date"] if "date" in dic else None
+        uni = dic["uni"] if "uni" in dic else None
+        limit = dic["limit"] if "limit" in dic else None
+        offset = dic["offset"] if "offset" in dic else None
         sql = "SELECT * FROM students"
+        if call_no or date or uni:
+            sql += "where"
+            if call_no:
+                sql += " call_no='{}' and".format(call_no)
+            if date:
+                sql += " date='{}' and".format(date)
+            if uni:
+                sql += " uni={} and".format(uni)
+            sql = sql[:-3]
+        if limit:
+            sql += " LIMIT {}".format(limit)
+        if offset:
+            sql += " OFFSET {}".format(offset)
         res = self.cur.execute(sql)
         result = self.cur.fetchone()
         return result
