@@ -1,7 +1,7 @@
 from flask import Flask, Response, request
 from datetime import datetime
 import json
-from columbia_student_resource import ColumbiaStudentResource
+from DBResource import *
 from flask_cors import CORS
 
 # Create the Flask application object.
