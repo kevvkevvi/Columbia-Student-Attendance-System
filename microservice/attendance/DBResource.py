@@ -1,3 +1,11 @@
+################################################
+#  Third MicroService
+#  Attendance
+#  sections(call_no, course_name, enrollment_number)
+#  class(call_no, date, attendance)
+#  students(UNI, call_no, date)
+#  By Yipeng Geng, yg2913
+################################
 import pymysql
 import os
 usr = os.environ.get("DBUSER")
@@ -137,3 +145,60 @@ class DBResource:
         res = self.cur.execute(sql, args=(call_no, uni))
         result = self.cur.fetchone()
         return result
+
+    def add_section(self, call_no, course_name, enrollment_number):
+        sql = "insert into sections (call_no, course_name, enrollment_number) values (%s, %s, %s)"
+        res = self.cur.execute(sql, args=(call_no, course_name, enrollment_number))
+        return res
+
+    def add_class(self, call_no, date, attendance):
+        sql = "insert into class (call_no, date, attendance) values (%s, %s, %s)"
+        res = self.cur.execute(sql, args=(call_no, date, attendance))
+        return res
+
+    def add_student(self, uni, call_no, date, increase_attendance=True):
+        sql = "insert into students (UNI, call_no, date) values (%s, %s, %s)"
+        res = self.cur.execute(sql, args=(uni, call_no, date))
+        print(res)
+        if res and increase_attendance:
+            sql = "update class set attendance = attendance + 1 where call_no=%s and date=%s"
+            self.cur.execute(sql, args=(call_no, date))
+            res = self.cur.rowcount
+        return res
+
+    def delete_section(self, call_no):
+        sql = "delete from sections where call_no=%s"
+        self.cur.execute(sql, args=(call_no))
+        res = self.cur.rowcount  # number of affected rows
+        return res
+
+    def delete_class(self, call_no, date):
+        sql = "delete from class where call_no=%s and date=%s"
+        self.cur.execute(sql, args=(call_no, date))
+        res = self.cur.rowcount  # number of affected rows
+        return res
+
+    def delete_student(self, uni, call_no, date, decrease_attendance=True):
+        sql = "delete from students where UNI=%s and call_no=%s and date=%s"
+        self.cur.execute(sql, args=(uni, call_no, date))
+        res = self.cur.rowcount  # number of affected rows
+        if res and decrease_attendance:
+            sql = "update class set attendance = attendance - 1 where call_no=%s and date=%s"
+            self.cur.execute(sql, args=(call_no, date))
+            res = self.cur.rowcount
+        return res
+
+    def update_section_enrollment(self, call_no, enrollment):
+        sql = "update sections set enrollment_number = %s where call_no = %s"
+        res = self.cur.execute(sql, args=(enrollment, call_no))
+        return res
+
+    def update_section_name(self, call_no, course_name):
+        sql = "update sections set course_name = %s where call_no = %s"
+        res = self.cur.execute(sql, args=(course_name, call_no))
+        return res
+
+    def update_class_attendance(self, call_no, date, attendance):
+        sql = "update class set attendance = %s where call_no = %s and date = %s"
+        res = self.cur.execute(sql, args=(attendance, call_no, date))
+        return res

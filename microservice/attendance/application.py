@@ -1,3 +1,11 @@
+################################################
+#  Third MicroService
+#  Attendance
+#  sections(call_no, course_name, enrollment_number)
+#  class(call_no, date, attendance)
+#  students(UNI, call_no, date)
+#  By Yipeng Geng, yg2913
+################################
 from flask import Flask, Response, request
 import datetime
 import json
@@ -117,6 +125,104 @@ def get_section_student(call_no, uni):  # get <uni> attendance records of <call_
         rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
     else:
         rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+    return rsp
+
+
+@app.route("/api/sections", methods=["POST"])
+def add_section():  # add a new section
+    data = request.form
+    result = DBResource().add_section(data['call_no'], data['course_name'], data['enrollment_number'])
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("FAIL", status=404, content_type="text/plain")
+    print(rsp)
+    return rsp
+
+
+@app.route("/api/class", methods=["POST"])
+def add_class():  # a section adds a new class
+    data = request.form
+    result = DBResource().add_class(data['call_no'], data['date'], data['attendance'])
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("FAIL", status=404, content_type="text/plain")
+    return rsp
+
+
+@app.route("/api/students", methods=["POST"])
+def add_student():  # a student attend a class, the class's attendance number increase 1
+    data = request.form
+    result = DBResource().add_student(data['uni'], data['call_no'], data['date'], increase_attendance=True)
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("FAIL", status=404, content_type="text/plain")
+    return rsp
+
+
+@app.route("/api/sections", methods=["DELETE"])
+def delete_section():  # delete a section
+    data = request.form
+    result = DBResource().delete_section(data['call_no'])
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("FAIL", status=404, content_type="text/plain")
+    return rsp
+
+
+@app.route("/api/class", methods=["DELETE"])
+def delete_class():  # delete a class
+    data = request.form
+    result = DBResource().delete_class(data['call_no'], data['date'])
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("FAIL", status=404, content_type="text/plain")
+    return rsp
+
+@app.route("/api/students", methods=["DELETE"])
+def delete_student():  # delete a student, the class's attendance decrease 1
+    data = request.form
+    result = DBResource().delete_student(data['uni'], data['call_no'], data['date'], decrease_attendance=True)
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("FAIL", status=404, content_type="text/plain")
+    return rsp
+
+
+@app.route("/api/sections/edit_enrollment_number", methods=["POST"])
+def update_section_enrollment():  # update a section's enrollment_number
+    data = request.form
+    result = DBResource().update_section_enrollment(data['call_no'], data['enrollment_number'])
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("FAIL", status=404, content_type="text/plain")
+    return rsp
+
+@app.route("/api/sections/edit_course_name", methods=["POST"])
+def update_section_name():  # update a section's course_name
+    data = request.form
+    result = DBResource().update_section_name(data['call_no'], data['course_name'])
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("FAIL", status=404, content_type="text/plain")
+    return rsp
+
+
+@app.route("/api/class/edit_attendance", methods=["POST"])
+def update_class_attendance():  # update a class's attendance
+    data = request.form
+    result = DBResource().update_class_attendance(data['call_no'], data['date'], data['attendance'])
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("FAIL", status=404, content_type="text/plain")
     return rsp
 
 
