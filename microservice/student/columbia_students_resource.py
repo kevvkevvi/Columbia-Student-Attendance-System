@@ -3,7 +3,7 @@ import pymysql
 import os
 
 
-class ColumbiaCourseResource:
+class ColumbiaStudentsResource:
 
     def __int__(self):
         pass
@@ -25,13 +25,22 @@ class ColumbiaCourseResource:
         return conn
 
     @staticmethod
-    def get_by_key(key):
-
-        sql = "SELECT * FROM f22_databases.columbia_courses where guid=%s";
-        conn = ColumbiaCourseResource._get_connection()
+    def get_student_by_key(key):
+        sql = "SELECT * FROM students.students where UNI=%s";
+        conn = ColumbiaStudentsResource._get_connection()
         cur = conn.cursor()
         res = cur.execute(sql, args=key)
         result = cur.fetchone()
 
         return result
 
+    @staticmethod
+    def add_student(UNI, first_name, last_name, email):
+
+        sql = "insert into students.students (UNI, first_name, last_name, email) \
+        values (%s, %s, %s, %s)";
+        conn = ColumbiaStudentsResource._get_connection()
+        cur = conn.cursor()
+        res = cur.execute(sql, args=(UNI, first_name, last_name, email))
+
+        return res
