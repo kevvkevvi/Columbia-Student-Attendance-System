@@ -111,8 +111,8 @@ class ColumbiaCoursesResource:
         res = cur.execute(sql, args=(call_no, uni)) # number of affected rows
         # if insert successfully, update enrollment_number
         if res:
-            sql1 = "update courses.sections set enrollment_number = enrollment_number + 1";
-            res1 = cur.execute(sql1)
+            sql = "update courses.sections set enrollment_number = enrollment_number + 1 where call_no=%s"
+            res = cur.execute(sql, args=(call_no))
 
         return res
 
@@ -126,8 +126,8 @@ class ColumbiaCoursesResource:
         res = cur.rowcount
         # if delete successfully, update enrollment_number
         if res:
-            sql1 = "update courses.sections set enrollment_number = enrollment_number - 1";
-            res1 = cur.execute(sql1)
+            sql = "update courses.sections set enrollment_number = enrollment_number - 1 where call_no=%s"
+            res = cur.execute(sql, args=(call_no))
 
         return res
 
