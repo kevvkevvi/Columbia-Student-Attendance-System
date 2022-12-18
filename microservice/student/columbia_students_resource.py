@@ -13,12 +13,13 @@ class ColumbiaStudentsResource:
 
         usr = "kentwhf"
         pw = "Wuhuifeng1007!"
-        h = "jdbc:mysql://awseb-e-g6gye3m3t8-stack-awsebrdsdatabase-0z9z4mepwpq3.cilqzt8nihgc.us-east-2.rds.amazonaws.com:3306/"
+        h = "awseb-e-g6gye3m3t8-stack-awsebrdsdatabase-0z9z4mepwpq3.cilqzt8nihgc.us-east-2.rds.amazonaws.com"
 
         conn = pymysql.connect(
             user=usr,
             password=pw,
             host=h,
+            port=3306,
             cursorclass=pymysql.cursors.DictCursor,
             autocommit=True
         )

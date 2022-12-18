@@ -12,6 +12,9 @@ application = Flask(__name__,
 
 CORS(application)
 
+@application.route("/")
+def index():
+    return "<h1>Hello World!</h1>"
 
 @application.route("/student/<uni>", methods=["GET"])
 def get_student_by_key(uni):
