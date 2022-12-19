@@ -4,18 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0e9ad834-742a-4ec0-a5f4-914e19bd0316" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/setup/Setup.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/setup/Setup.ipynb" afterDir="false" />
-    </list>
+    <list default="true" id="0e9ad834-742a-4ec0-a5f4-914e19bd0316" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="2FNwaJgd58RURRrFnVLungdjZpn" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -25,7 +24,7 @@
     "RunOnceActivity.OpenDatabaseViewOnStart": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/kevvk/OneDrive/Desktop/Columbia/Fall 2022/COMS 6156/F22-Starter-DB",
+    "last_opened_file_path": "C:/Users/kevvk",
     "settings.editor.selected.configurable": "database.query.execution"
   }
 }]]></component>

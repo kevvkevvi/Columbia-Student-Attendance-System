@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:5011';
-
 const Course = () => {
     const [sections, setSections] = useState([]);
     const [callNo, setCallNo] = useState('');
@@ -11,7 +9,8 @@ const Course = () => {
 
     const getSections = () => {
         console.log('Sending GET request to /api/sections');
-        return axios.get(`${baseUrl}/api/sections`)
+        // fetch
+        return axios.get(`/api/sections`)
             .then((response) => {
                 console.log('Received response from /api/sections');
                 return response.data;
@@ -24,7 +23,7 @@ const Course = () => {
 
     const addSection = (callNo, courseName, enrollmentNumber) => {
         console.log('Sending POST request to /api/sections');
-        return axios.post(`${baseUrl}/api/sections`, {
+        return axios.post(`/api/sections`, {
             call_no: callNo,
             course_name: courseName,
             enrollment_number: enrollmentNumber,
