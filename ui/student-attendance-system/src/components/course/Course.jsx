@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const baseUrl = 'http://localhost:5011';
+
 const Course = () => {
     const [sections, setSections] = useState([]);
     const [callNo, setCallNo] = useState('');
@@ -8,24 +10,35 @@ const Course = () => {
     const [enrollmentNumber, setEnrollmentNumber] = useState('');
 
     const getSections = () => {
-        return axios.get('/api/sections')
-            .then((response) => response.data)
+        console.log('Sending GET request to /api/sections');
+        return axios.get(`${baseUrl}/api/sections`)
+            .then((response) => {
+                console.log('Received response from /api/sections');
+                return response.data;
+            })
             .catch((error) => {
+                console.error('Error getting sections:', error);
                 throw error;
             });
     };
 
     const addSection = (callNo, courseName, enrollmentNumber) => {
-        return axios.post('/api/sections', {
+        console.log('Sending POST request to /api/sections');
+        return axios.post(`${baseUrl}/api/sections`, {
             call_no: callNo,
             course_name: courseName,
             enrollment_number: enrollmentNumber,
         })
-            .then((response) => response.data)
+            .then((response) => {
+                console.log('Received response from /api/sections');
+                return response.data;
+            })
             .catch((error) => {
+                console.error('Error adding section:', error);
                 throw error;
             });
     };
+
 
     useEffect(() => {
         getSections()

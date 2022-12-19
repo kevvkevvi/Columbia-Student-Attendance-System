@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from 'axios'
+// import axios from 'axios'
 import Student from '../../components/student/Student'
 import Course from '../../components/course/Course'
 

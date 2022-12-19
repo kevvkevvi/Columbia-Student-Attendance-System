@@ -5,10 +5,12 @@ from columbia_courses_resource import ColumbiaCoursesResource
 from flask_cors import CORS
 
 # Create the Flask application object.
-app = Flask(__name__,
-            static_url_path='/',
-            static_folder='static/class-ui/',
-            template_folder='web/templates')
+app = Flask(
+    __name__,
+    static_url_path="/",
+    static_folder="static/class-ui/",
+    template_folder="web/templates",
+)
 
 CORS(app)
 
@@ -67,14 +69,15 @@ def get_enrollments_by_uni(uni):
 
 @app.route("/api/sections", methods=["POST"])
 def add_section():
-
-    data = request.form
-    result = ColumbiaCoursesResource.add_section(data['call_no'], data['course_name'], data['enrollment_number'])
+    data = request.get_json()
+    result = ColumbiaCoursesResource.add_section(
+        data["call_no"], data["course_name"], data["enrollment_number"]
+    )
 
     if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        rsp = Response(json.dumps(result), status=200, content_type="application/json")
     else:
-        rsp = Response("FAIL", status=404, content_type="text/plain")
+        rsp = Response("FAIL", status=400, content_type="text/plain")
 
     return rsp
 
@@ -96,7 +99,9 @@ def delete_section(no):
 def update_section_name():
 
     data = request.form
-    result = ColumbiaCoursesResource.update_section_name(data['call_no'], data['course_name'])
+    result = ColumbiaCoursesResource.update_section_name(
+        data["call_no"], data["course_name"]
+    )
 
     if result:
         rsp = Response(json.dumps(result), status=200, content_type="application.json")
@@ -110,7 +115,7 @@ def update_section_name():
 def add_enrollment():
 
     data = request.form
-    result = ColumbiaCoursesResource.add_enrollment(data['call_no'], data['uni'])
+    result = ColumbiaCoursesResource.add_enrollment(data["call_no"], data["uni"])
 
     # number of affected rows
     if result:
@@ -125,7 +130,7 @@ def add_enrollment():
 def delete_enrollment():
 
     data = request.form
-    result = ColumbiaCoursesResource.delete_enrollment(data['call_no'], data['uni'])
+    result = ColumbiaCoursesResource.delete_enrollment(data["call_no"], data["uni"])
 
     if result:
         rsp = Response(json.dumps(result), status=200, content_type="application.json")
@@ -137,4 +142,3 @@ def delete_enrollment():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5011)
-
