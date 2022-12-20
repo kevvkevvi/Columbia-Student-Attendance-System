@@ -1,2 +1,2 @@
-# F22-Starter-DB
-Simple starter database project for F22 Columbia classes.
+# F22-DB
+database for F22 Columbia classes.
