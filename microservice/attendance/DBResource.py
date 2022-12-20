@@ -56,7 +56,7 @@ class DBResource:
         result = self.cur.fetchall()
         return result
 
-    def get_classes(self):
+    def get_classes(self, dic):
         call_no = dic["call_no"] if "call_no" in dic else None
         date = dic["date"] if "date" in dic else None
         attendance = dic["attendance"] if "attendance" in dic else None
@@ -80,7 +80,7 @@ class DBResource:
         result = self.cur.fetchone()
         return result
 
-    def get_students(self):
+    def get_students(self, dic):
         call_no = dic["call_no"] if "call_no" in dic else None
         date = dic["date"] if "date" in dic else None
         uni = dic["uni"] if "uni" in dic else None
