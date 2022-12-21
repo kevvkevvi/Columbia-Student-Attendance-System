@@ -1,19 +1,23 @@
-import { BrowserRouter, Routes, Route, Switch } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-import './App.css';
-import Home from "./pages/home/Home";
+import React from "react";
+// import { Router } from 'react-router-dom';
+// import { createBrowserHistory } from 'history';
+import Student from "./components/Student"
+import Course from "./components/Course";
+import Attendance from "./components/Attendance";
 
-function App() {
+// const history = createBrowserHistory();
+
+const App = () => {
   return (
-    <div className="App">
-      <h1>Student Management System</h1>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </BrowserRouter>
+    <div>
+      {/* <Router history={history}> */}
+      <h1>Student Attendance System</h1>
+      <Student uni="hw2910" />
+      <Course />
+      <Attendance />
+      {/* </Router> */}
     </div>
   );
-}
+};
 
 export default App;

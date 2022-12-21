@@ -8,10 +8,13 @@
 ################################
 import pymysql
 import os
+
 usr = os.environ.get("DBUSER")
 pw = os.environ.get("DBPW")
 h = os.environ.get("DBHOST")
 sma = "attendance"
+
+
 class DBResource:
     def __init__(self, user=usr, password=pw, host=h, schema=sma):
         self.user = user
@@ -27,7 +30,7 @@ class DBResource:
             host=self.host,
             cursorclass=pymysql.cursors.DictCursor,
             autocommit=True,
-            db=self.schema
+            db=self.schema,
         )
         cur = conn.cursor()
         return conn, cur
@@ -35,7 +38,9 @@ class DBResource:
     def get_sections(self, dic):
         call_no = dic["call_no"] if "call_no" in dic else None
         course_name = dic["course_name"] if "course_name" in dic else None
-        enrollment_number = dic["enrollment_number"] if "enrollment_number" in dic else None
+        enrollment_number = (
+            dic["enrollment_number"] if "enrollment_number" in dic else None
+        )
         limit = dic["limit"] if "limit" in dic else None
         offset = dic["offset"] if "offset" in dic else None
         sql = "SELECT * FROM sections "
@@ -56,7 +61,7 @@ class DBResource:
         result = self.cur.fetchall()
         return result
 
-    def get_classes(self):
+    def get_classes(self, dic):
         call_no = dic["call_no"] if "call_no" in dic else None
         date = dic["date"] if "date" in dic else None
         attendance = dic["attendance"] if "attendance" in dic else None
@@ -80,7 +85,7 @@ class DBResource:
         result = self.cur.fetchone()
         return result
 
-    def get_students(self):
+    def get_students(self, dic):
         call_no = dic["call_no"] if "call_no" in dic else None
         date = dic["date"] if "date" in dic else None
         uni = dic["uni"] if "uni" in dic else None
@@ -115,7 +120,7 @@ class DBResource:
         res = self.cur.execute(sql, args=key)
         result = self.cur.fetchall()
         return result
-    
+
     def get_section_attendance(self, call_no, date):
         sql = "SELECT * FROM class where call_no=%s and date=%s"
         res = self.cur.execute(sql, args=(call_no, date))
@@ -133,7 +138,7 @@ class DBResource:
         res = self.cur.execute(sql, args=(call_no, date, uni))
         result = self.cur.fetchone()
         return result
-    
+
     def get_section_students(self, call_no):
         sql = "SELECT call_no, UNI, date FROM students NATURAL JOIN sections where call_no=%s"
         res = self.cur.execute(sql, args=(call_no))
