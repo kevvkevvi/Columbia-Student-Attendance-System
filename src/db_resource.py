@@ -8,9 +8,10 @@ import pymysql
 
 usr = "kentwhf"
 pw = "Wuhuifeng1007!"
-h = "awseb-e-g6gye3m3t8-stack-awsebrdsdatabase-0z9z4mepwpq3.cilqzt8nihgc.us-east-2.rds.amazonaws.com/attend"
+h = "awseb-e-g6gye3m3t8-stack-awsebrdsdatabase-0z9z4mepwpq3.cilqzt8nihgc.us-east-2.rds.amazonaws.com"
 
-# sma = "attend"
+
+sma = "attend"
 
 
 class DbResource:
