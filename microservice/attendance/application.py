@@ -33,7 +33,7 @@ class DateEncoder(json.JSONEncoder):
 def get_sections():  # get all sections or by query strings (pagination supported)
     result = DBResource().get_sections(request.args.to_dict())
     if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
     else:
         rsp = Response("NOT FOUND", status=404, content_type="text/plain")
     return rsp
@@ -43,7 +43,7 @@ def get_sections():  # get all sections or by query strings (pagination supporte
 def get_classes():  # get all classes or by query strings (pagination supported)
     result = DBResource().get_classes(request.args.to_dict())
     if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
     else:
         rsp = Response("NOT FOUND", status=404, content_type="text/plain")
     return rsp
@@ -53,7 +53,7 @@ def get_classes():  # get all classes or by query strings (pagination supported)
 def get_students():  # get all students or by query strings (pagination supported)
     result = DBResource().get_students(request.args.to_dict())
     if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
     else:
         rsp = Response("NOT FOUND", status=404, content_type="text/plain")
     return rsp
@@ -63,7 +63,7 @@ def get_students():  # get all students or by query strings (pagination supporte
 def get_section(call_no):  # get section by primary key
     result = DBResource().get_section(call_no)
     if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
     else:
         rsp = Response("NOT FOUND", status=404, content_type="text/plain")
     return rsp
@@ -133,7 +133,7 @@ def add_section():  # add a new section
     data = request.form
     result = DBResource().add_section(data['call_no'], data['course_name'], data['enrollment_number'])
     if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
     else:
         rsp = Response("FAIL", status=404, content_type="text/plain")
     print(rsp)
@@ -145,7 +145,7 @@ def add_class():  # a section adds a new class
     data = request.form
     result = DBResource().add_class(data['call_no'], data['date'], data['attendance'])
     if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
     else:
         rsp = Response("FAIL", status=404, content_type="text/plain")
     return rsp
@@ -156,7 +156,7 @@ def add_student():  # a student attend a class, the class's attendance number in
     data = request.form
     result = DBResource().add_student(data['uni'], data['call_no'], data['date'], increase_attendance=True)
     if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
     else:
         rsp = Response("FAIL", status=404, content_type="text/plain")
     return rsp
@@ -167,7 +167,7 @@ def delete_section():  # delete a section
     data = request.form
     result = DBResource().delete_section(data['call_no'])
     if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
     else:
         rsp = Response("FAIL", status=404, content_type="text/plain")
     return rsp
@@ -178,7 +178,7 @@ def delete_class():  # delete a class
     data = request.form
     result = DBResource().delete_class(data['call_no'], data['date'])
     if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
     else:
         rsp = Response("FAIL", status=404, content_type="text/plain")
     return rsp
@@ -188,7 +188,7 @@ def delete_student():  # delete a student, the class's attendance decrease 1
     data = request.form
     result = DBResource().delete_student(data['uni'], data['call_no'], data['date'], decrease_attendance=True)
     if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
     else:
         rsp = Response("FAIL", status=404, content_type="text/plain")
     return rsp
@@ -199,7 +199,7 @@ def update_section_enrollment():  # update a section's enrollment_number
     data = request.form
     result = DBResource().update_section_enrollment(data['call_no'], data['enrollment_number'])
     if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
     else:
         rsp = Response("FAIL", status=404, content_type="text/plain")
     return rsp
@@ -209,7 +209,7 @@ def update_section_name():  # update a section's course_name
     data = request.form
     result = DBResource().update_section_name(data['call_no'], data['course_name'])
     if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
     else:
         rsp = Response("FAIL", status=404, content_type="text/plain")
     return rsp
@@ -220,7 +220,7 @@ def update_class_attendance():  # update a class's attendance
     data = request.form
     result = DBResource().update_class_attendance(data['call_no'], data['date'], data['attendance'])
     if result:
-        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
     else:
         rsp = Response("FAIL", status=404, content_type="text/plain")
     return rsp
