@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a simple Flask based starter microservice for F22 Columbia classes.
+This is a simple Flask based microservice for F22 Columbia classes.
 
 
 ## Setup
