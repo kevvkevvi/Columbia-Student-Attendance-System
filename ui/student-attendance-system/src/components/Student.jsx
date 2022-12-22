@@ -24,6 +24,18 @@ const Student = ({ uni }) => {
         fetchStudent();
     }, [uni]);
 
+    useEffect(() => {
+        if (student) {
+            setFormValues({
+                UNI: student.UNI,
+                first_name: student.first_name,
+                last_name: student.last_name,
+                email: student.email,
+            });
+        }
+    }, [student]);
+
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormValues({ ...formValues, [name]: value });
@@ -33,7 +45,9 @@ const Student = ({ uni }) => {
         event.preventDefault();
         try {
             const response = await axios.post(`http://6156projstudentmicroservice-env.eba-ds6ar3x2.us-east-2.elasticbeanstalk.com/api/student`, formValues);
+            // update student with the response data from the server
             setStudent(response.data);
+            // set showForm to false to hide the form
             setShowForm(false);
         } catch (error) {
             console.error(error);
@@ -43,9 +57,7 @@ const Student = ({ uni }) => {
     if (!student) {
         return (
             <div className="student-info">
-                {!showForm ? (
-                    <button onClick={() => setShowForm(true)}>Add Student</button>
-                ) : (
+                {showForm ? (
                     <form onSubmit={handleSubmit}>
                         <label htmlFor="UNI">UNI:</label>
                         <input type="text" id="UNI" name="UNI" value={formValues.UNI} onChange={handleChange} />
@@ -59,12 +71,15 @@ const Student = ({ uni }) => {
                         <label htmlFor="email">Email:</label>
                         <input type="text" id="email" name="email" value={formValues.email} onChange={handleChange} />
                         <br />
-                        <button type="submit">Submit</button>
+                        <button onClick={() => setStudent(formValues)} type="submit">Submit</button>
                     </form>
+                ) : (
+                    <button onClick={() => setShowForm(true)}>Add Student</button>
                 )}
             </div>
         );
     }
+
 
     return (
         <div>
