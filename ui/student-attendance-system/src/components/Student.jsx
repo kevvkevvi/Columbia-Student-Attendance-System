@@ -10,7 +10,7 @@ const Student = ({ uni }) => {
         last_name: "",
         email: "",
     });
-
+    console.log("student", student);
     useEffect(() => {
         const fetchStudent = async () => {
             try {

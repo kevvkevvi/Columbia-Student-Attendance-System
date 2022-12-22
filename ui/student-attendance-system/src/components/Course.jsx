@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 const Course = ({ uni }) => {
     const [courses, setCourses] = useState(null);
+
+    const history = useHistory();
+
+    const handleClick = (course) => {
+        history.push(`/attendance?uni=${uni}&call_no=${course.call_no}`);
+        // history.push(`/attendance?uni=${uni}&call_no=${course.call_no}`);
+    };
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -25,10 +34,16 @@ const Course = ({ uni }) => {
 
     return (
         <div>
-            <h1>Courses</h1>
+            <h2 className="courses">Courses</h2>
             {courses.map((course) => (
+                // <div className="courses" key={course.call_no} onClick={() => {
+                //     // Navigate to the Attendance component and pass along the necessary parameters as query string parameters in the URL
+                //     window.location.assign(`/attendance?uni=${uni}&call_no=${course.call_no}`);
+                // }}>
+                //     <p className="course">{course.call_no}</p>
+                // </div>
                 <div className="courses" key={course.call_no}>
-                    <p>Call Number: {course.call_no}</p>
+                    <Link onClick={() => handleClick(course)}>{course.call_no}</Link>
                 </div>
             ))}
         </div>
