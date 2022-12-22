@@ -4,6 +4,8 @@ import React from "react";
 import Student from "./components/Student"
 import Course from "./components/Course";
 import Attendance from "./components/Attendance";
+import './App.css';
+
 
 // const history = createBrowserHistory();
 
@@ -13,7 +15,10 @@ const App = () => {
       {/* <Router history={history}> */}
       <h1>Student Attendance System</h1>
       <Student uni="hw2910" />
-      <Course />
+      <Course uni="hw2910" />
+      {/* play around with the uni value to see the different results*/}
+      {/* <Student uni="kjl2185" />
+      <Course uni="kjl2185" /> */}
       <Attendance />
       {/* </Router> */}
     </div>

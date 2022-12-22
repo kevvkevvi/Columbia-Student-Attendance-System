@@ -30,3 +30,6 @@ create table enrollments
 
  insert into enrollments (call_no, uni)
     values ("COMS6156","hr2543");
+
+ insert into enrollments (call_no, uni)
+    values ("COMS6156","hw2910");

@@ -1,169 +1,129 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const baseUrl = "http://ec2-34-224-37-72.compute-1.amazonaws.com:5011";
-
-function Course(props) {
-    const { uni } = props;
-    const [courses, setCourses] = useState([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Make a request to the student microservice to get the student's name
-                const studentResponse = await axios(
-                    `http://6156projstudentmicroservice-env.eba-ds6ar3x2.us-east-2.elasticbeanstalk.com/student/${uni}`
-                );
-                const studentName = studentResponse.data.name;
-
-                // Use the student's name to get the courses they are taking
-                const result = await axios(
-                    `${baseUrl}/section/name/${studentName}`
-                );
-                setCourses(result.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchData();
-    }, [uni]);
-
-    if (!courses) {
-        return <p>Loading courses data...</p>;
-    }
-
+const Course = ({ uni, call_no }) => {
     return (
         <div>
-            {courses.map((course) => (
-                <div key={course.call_no}>
-                    <h1>{course.course_name}</h1>
-                    <p>{course.enrollment_number}</p>
-                    <button onClick={() => checkIn(course.call_no, course.enrollment_number)}>Check In</button>
-                </div>
-            ))}
+            <h1>Course Name</h1>
+            <p>Course Description</p>
+            <button onClick={() => checkIn(uni, call_no)}>Check In</button>
         </div>
     );
 }
 
-function checkIn(callNo, enrollmentNumber) {
-    axios.post(`http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/sections/edit_enrollment_number`, {
-        call_no: callNo,
-        enrollment_number: enrollmentNumber + 1,
-    });
+const checkIn = (uni, call_no) => {
+    // Make POST request to /api/attendance endpoint
+    fetch('http://ec2-34-224-37-72.compute-1.amazonaws.com:5011/api/enrollments', {
+        method: 'POST',
+        body: JSON.stringify({ call_no, uni }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            // Handle success or failure of request
+        })
+        .catch(error => {
+            console.error(error);
+        });
 }
 
+const Courses = ({ uni }) => {
+    const [courses, setCourses] = useState([]);
+    // console.log("we're here")
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const response = await axios.get(`http://ec2-34-224-37-72.compute-1.amazonaws.com:5011/enrollments/uni/${uni}`);
+                setCourses(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchCourses();
+    }, [uni]);
 
-export default Course;
+    return (
+        // console.log(courses);
+        <div className="courses">
+            {courses.map((course) => (
+                <Course key={course.course_number} courseName={course.course_name} courseNumber={course.course_number} />
+            ))}
+        </div>
+    );
+};
+
+export default Courses;
 
 
 
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
 
-// const Course = () => {
-//     const [sections, setSections] = useState([]);
-//     const [callNo, setCallNo] = useState('');
-//     const [courseName, setCourseName] = useState('');
-//     const [enrollmentNumber, setEnrollmentNumber] = useState('');
 
-//     const getSections = () => {
-//         console.log('Sending GET request to /api/sections');
-//         // fetch
-//         return axios.get(`/api/sections`)
-//             .then((response) => {
-//                 console.log('Received response from /api/sections');
-//                 return response.data;
-//             })
-//             .catch((error) => {
-//                 console.error('Error getting sections:', error);
-//                 throw error;
-//             });
-//     };
 
-//     const addSection = (callNo, courseName, enrollmentNumber) => {
-//         console.log('Sending POST request to /api/sections');
-//         return axios.post(`/api/sections`, {
-//             call_no: callNo,
-//             course_name: courseName,
-//             enrollment_number: enrollmentNumber,
-//         })
-//             .then((response) => {
-//                 console.log('Received response from /api/sections');
-//                 return response.data;
-//             })
-//             .catch((error) => {
-//                 console.error('Error adding section:', error);
-//                 throw error;
-//             });
-//     };
 
+
+
+
+
+
+
+
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
+// import '../App.css';
+
+// const baseUrl = "http://ec2-34-224-37-72.compute-1.amazonaws.com:5011";
+
+// function Course(props) {
+//     const { uni } = props;
+//     const [courses, setCourses] = useState([]);
 
 //     useEffect(() => {
-//         getSections()
-//             .then((data) => {
-//                 setSections(data);
-//             })
-//             .catch((error) => {
-//                 console.error(error);
-//             });
-//     }, []);
+//         const fetchData = async () => {
+//             try {
+//                 // Make a request to the student microservice to get the student's name
+//                 const studentResponse = await axios(
+//                     `http://6156projstudentmicroservice-env.eba-ds6ar3x2.us-east-2.elasticbeanstalk.com/student/${uni}`
+//                 );
+//                 const studentName = studentResponse.data.name;
 
-//     const handleSubmit = async (event) => {
-//         event.preventDefault();
-//         try {
-//             const data = await addSection(callNo, courseName, enrollmentNumber);
-//             console.log(data);
-//             setCallNo('');
-//             setCourseName('');
-//             setEnrollmentNumber('');
-//         } catch (error) {
-//             console.error(error);
-//         }
-//     };
+//                 // Use the student's name to get the courses they are taking
+//                 const result = await axios(
+//                     `${baseUrl}/section/name/${studentName}`
+//                 );
+//                 setCourses(result.data);
+//             } catch (error) {
+//                 console.error(error);
+//             }
+//         };
+//         fetchData();
+//     }, [uni]);
+
+//     if (!courses) {
+//         return <p>Loading courses data...</p>;
+//     }
 
 //     return (
-//         <div>
-//             <h2>Course List</h2>
-//             <ul>
-//                 {sections.map((section) => (
-//                     <li key={section.call_no}>
-//                         {section.course_name} ({section.call_no})
-//                     </li>
-//                 ))}
-//             </ul>
-//             <form onSubmit={handleSubmit}>
-//                 <label htmlFor="callNo">
-//                     Call No:
-//                     <input
-//                         type="text"
-//                         value={callNo}
-//                         onChange={(event) => setCallNo(event.target.value)}
-//                     />
-//                 </label>
-//                 <br />
-//                 <label htmlFor="courseName">
-//                     Course Name:
-//                     <input
-//                         type="text"
-//                         value={courseName}
-//                         onChange={(event) => setCourseName(event.target.value)}
-//                     />
-//                 </label>
-//                 <br />
-//                 <label htmlFor="enrollmentNumber">
-//                     Enrollment Number:
-//                     <input
-//                         type="number"
-//                         value={enrollmentNumber}
-//                         onChange={(event) => setEnrollmentNumber(event.target.value)}
-//                     />
-//                 </label>
-//                 <br />
-//                 <button type="submit">Add Section</button>
-//             </form>
+//         <div className="courses">
+//             {courses.map((course) => (
+//                 <div className="course" key={course.call_no}>
+//                     <h1 className="course h1">{course.course_name}</h1>
+//                     <p className="course p">{course.enrollment_number}</p>
+//                     <button className="course button" onClick={() => checkIn(course.call_no, course.enrollment_number)}>Check In</button>
+//                 </div>
+//             ))}
 //         </div>
 //     );
-// };
+// }
+
+// function checkIn(callNo, enrollmentNumber) {
+//     axios.post(`http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/sections/edit_enrollment_number`, {
+//         call_no: callNo,
+//         enrollment_number: enrollmentNumber + 1,
+//     });
+// }
+
 
 // export default Course;
-
