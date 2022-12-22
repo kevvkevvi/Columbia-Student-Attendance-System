@@ -23,12 +23,60 @@ class DateEncoder(json.JSONEncoder):
         else:
             return json.JSONEncoder.default(self, obj)
 
+@app.route("/stduents", methods=["POST"])
+def add_student(): # add a new student
+    data = request.get_json()
+    result = DbResource().add_student(
+        data["uni"], data["first_name"], data["last_name"], data["email"]
+    )
+
+    if result:
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application/json")
+    else:
+        rsp = Response("FAIL", status=400, content_type="text/plain")
+
+    return rsp
+
+@app.route("/students/<uni>", methods=["GET"])
+def get_student_by_key(uni):  # get student by primary key
+    result = DbResource().get_student_by_key(uni)
+    if result:
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
+    else:
+        rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+    return rsp
+
+
+@app.route("/students", methods=["PUT"])
+def update_student_email():  # update a student's email
+    data = request.get_json()
+    result = DbResource().update_student_email(
+        data["uni"], data["email"]
+    )
+    if result:
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
+    else:
+        rsp = Response("FAIL", status=404, content_type="text/plain")
+    return rsp
+
+@app.route("/students/<uni>", methods=["DELETE"])
+def delete_student(uni): # delete a student
+
+    result = DbResource().delete_student(uni)
+
+    if result:
+        rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
+    else:
+        rsp = Response("FAIL", status=404, content_type="text/plain")
+
+    return rsp
+
 
 @app.route("/sections", methods=["POST"])
 def add_section(): # add a new section
     data = request.get_json()
     result = DbResource().add_section(
-        data["call_no"], data["course_name"], data["enrollment_number"]
+        data["call_no"], data["course_name"], data["enrollment_num"]
     )
 
     if result:
@@ -84,10 +132,10 @@ def get_section_by_name(name):
 #     return rsp
 
 @app.route("/sections", methods=["PUT"])
-def update_section_enrollment():  # update a section's enrollment_number
+def update_section():  # update a section's enrollment_number and name
     data = request.get_json()
-    result = DbResource().update_section(
-        data["call_no"], data["course_name"], data["enrollment_number"]
+    result = DbResource().update_section_enroll_num(
+        data["call_no"], data["course_name"], data["enrollment_num"]
     )
     if result:
         rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")

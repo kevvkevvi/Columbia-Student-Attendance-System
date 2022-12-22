@@ -1,4 +1,5 @@
 import pymysql
+
 # import os
 
 # usr = os.environ.get("DBUSER")  # DBUSER
@@ -9,7 +10,6 @@ import pymysql
 usr = "kentwhf"
 pw = "Wuhuifeng1007!"
 h = "awseb-e-g6gye3m3t8-stack-awsebrdsdatabase-0z9z4mepwpq3.cilqzt8nihgc.us-east-2.rds.amazonaws.com"
-
 
 sma = "attend"
 
@@ -46,9 +46,9 @@ class DbResource:
 
         return res
 
-    #Student Read
-    def get_student_by_key(self,key):
-        # sql = "f22_databases.columbia_students where guid=%s";
+    # Student Read by key
+    def get_student_by_key(self, key):
+
         sql = "SELECT * FROM students where uni=%s";
         res = self.cur.execute(sql, args=key)
         result = self.cur.fetchone()
@@ -56,7 +56,7 @@ class DbResource:
         return result
 
     # Student Update email by uni
-    def update_student_email(self,uni, email):
+    def update_student_email(self, uni, email):
 
         sql = "update students set email = %s \
               where uni = %s";
@@ -68,22 +68,22 @@ class DbResource:
     # Student Delete by uni
     def delete_student(self, key):
         sql = "delete from students where uni=%s"
-        self.cur.execute(sql, args= key)
+        self.cur.execute(sql, args=key)
         res = self.cur.rowcount  # number of affected rows
         return res
 
-    # def delete_student(self, uni, call_no, date, decrease_attendance=True):
-    #     sql = "delete from students where uni=%s and call_no=%s and date=%s"
-    #     self.cur.execute(sql, args=(uni, call_no, date))
+    # def delete_student(self, uni,  decrease_attendance=True, decrease_enrollment=True):
+    #     sql = "delete from students where uni=%s "
+    #     self.cur.execute(sql, args=(uni))
     #     res = self.cur.rowcount  # number of affected rows
     #     if res and decrease_attendance:
-    #         sql = "update class set attendance = attendance - 1 where call_no=%s and date=%s"
+    #         sql = "update classes set attendance_num = attendance_num - 1 where call_no=%s and date=%s"
     #         self.cur.execute(sql, args=(call_no, date))
     #         res = self.cur.rowcount
     #     return res
 
     # Section Create
-    def add_section(self,call_no, course_name, enrollment_num):
+    def add_section(self, call_no, course_name, enrollment_num):
 
         sql = "insert into sections (call_no, course_name, enrollment_num) \
         values (%s, %s, %s)";
@@ -125,7 +125,7 @@ class DbResource:
         return result
 
     # Section Read by name
-    def get_section_by_name(self,name):
+    def get_section_by_name(self, name):
 
         sql = "SELECT * FROM sections where course_name=%s";
         res = self.cur.execute(sql, args=name)
@@ -142,18 +142,19 @@ class DbResource:
     #
     #     return res
 
-    # Section Update enrollment_num by call_no
-    def update_section(self, course_name, call_no, enrollment_num):
+
+    # Section Update by call_no
+    def update_section_enroll_num(self, call_no, course_name, enrollment_num):
         sql = "update sections set course_name = %s and enrollment_num = %s where call_no = %s"
         res = self.cur.execute(sql, args=(course_name, enrollment_num, call_no))
         return res
 
     # Section Delete by call_no
-    def delete_section(self,call_no):
+    def delete_section(self, call_no):
 
         sql = "delete from attend.sections where call_no=%s";
         self.cur.execute(sql, args=call_no)
-        res = self.cur.rowcount # number of affected rows
+        res = self.cur.rowcount  # number of affected rows
 
         return res
 
@@ -215,14 +216,13 @@ class DbResource:
         res = self.cur.rowcount  # number of affected rows
         return res
 
-
     # Enrollment Create
-    def add_enrollment(self,call_no, uni):
+    def add_enrollment(self, call_no, uni):
 
         sql = "insert into enrollments (call_no, uni) \
         values (%s, %s)";
 
-        res = self.cur.execute(sql, args=(call_no, uni)) # number of affected rows
+        res = self.cur.execute(sql, args=(call_no, uni))  # number of affected rows
         # if insert successfully, update enrollment_number
         if res:
             sql = "update sections set enrollment_num = enrollment_num + 1 where call_no=%s"
@@ -231,7 +231,7 @@ class DbResource:
         return res
 
     # Enrollment Read by call_no/uni
-    def get_enrollments_by_no(self,no):
+    def get_enrollments_by_no(self, no):
 
         sql = "SELECT * FROM enrollments where call_no=%s";
 
@@ -241,7 +241,7 @@ class DbResource:
         return result
 
     # Enrollment Read by call_no/uni
-    def get_enrollments_by_uni(self,uni):
+    def get_enrollments_by_uni(self, uni):
 
         sql = "SELECT * FROM enrollments where uni=%s";
 
@@ -250,9 +250,8 @@ class DbResource:
 
         return result
 
-
     # Enrollment Delete
-    def delete_enrollment(self,call_no, uni):
+    def delete_enrollment(self, call_no, uni):
 
         sql = "delete from enrollments where call_no=%s and uni=%s";
 
@@ -277,7 +276,6 @@ class DbResource:
             res = self.cur.rowcount
 
         return res
-
 
     # Attendance Read All
     def get_attendances(self, dic):
@@ -305,28 +303,28 @@ class DbResource:
         return result
 
     # Attendance Read by class
-    def get_attendances_by_class (self, call_no, date):
+    def get_attendances_by_class(self, call_no, date):
         sql = "SELECT * FROM attendances where call_no=%s and date=%s"
         res = self.cur.execute(sql, args=(call_no, date))
         result = self.cur.fetchone()
         return result
 
     # Attendance Read by class and student
-    def get_one_attendance (self, call_no, date, uni):
+    def get_one_attendance(self, call_no, date, uni):
         sql = "SELECT * FROM attendances where call_no=%s and date=%s and uni=%s"
         res = self.cur.execute(sql, args=(call_no, date, uni))
         result = self.cur.fetchone()
         return result
 
     # Attendance Read by section
-    def get_attendance_by_section (self, call_no):
+    def get_attendance_by_section(self, call_no):
         sql = "SELECT call_no, uni, date FROM attendances NATURAL JOIN sections where call_no=%s"
         res = self.cur.execute(sql, args=(call_no))
         result = self.cur.fetchone()
         return result
 
     # Attendance Read by section and student
-    def get_attendances_section_student (self, call_no, uni):
+    def get_attendances_section_student(self, call_no, uni):
         sql = "SELECT call_no, uni, date FROM attendances NATURAL JOIN sections where call_no=%s and uni=%s"
         res = self.cur.execute(sql, args=(call_no, uni))
         result = self.cur.fetchone()
