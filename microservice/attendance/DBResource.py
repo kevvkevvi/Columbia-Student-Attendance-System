@@ -82,7 +82,7 @@ class DBResource:
         if offset:
             sql += " OFFSET {}".format(offset)
         res = self.cur.execute(sql)
-        result = self.cur.fetchone()
+        result = self.cur.fetchall()
         return result
 
     def get_students(self, dic):
@@ -105,14 +105,15 @@ class DBResource:
             sql += " LIMIT {}".format(limit)
         if offset:
             sql += " OFFSET {}".format(offset)
+        print(sql)
         res = self.cur.execute(sql)
-        result = self.cur.fetchone()
+        result = self.cur.fetchall()
         return result
 
     def get_section(self, key):
         sql = "SELECT * FROM sections where call_no=%s"
         res = self.cur.execute(sql, args=key)
-        result = self.cur.fetchone()
+        result = self.cur.fetchall()
         return result
 
     def get_section_attendances(self, key):
@@ -124,31 +125,31 @@ class DBResource:
     def get_section_attendance(self, call_no, date):
         sql = "SELECT * FROM class where call_no=%s and date=%s"
         res = self.cur.execute(sql, args=(call_no, date))
-        result = self.cur.fetchone()
+        result = self.cur.fetchall()
         return result
 
     def get_section_class_students(self, call_no, date):
         sql = "SELECT * FROM students where call_no=%s and date=%s"
         res = self.cur.execute(sql, args=(call_no, date))
-        result = self.cur.fetchone()
+        result = self.cur.fetchall()
         return result
 
     def get_section_class_student(self, call_no, date, uni):
         sql = "SELECT * FROM students where call_no=%s and date=%s and UNI=%s"
         res = self.cur.execute(sql, args=(call_no, date, uni))
-        result = self.cur.fetchone()
+        result = self.cur.fetchall()
         return result
 
     def get_section_students(self, call_no):
         sql = "SELECT call_no, UNI, date FROM students NATURAL JOIN sections where call_no=%s"
         res = self.cur.execute(sql, args=(call_no))
-        result = self.cur.fetchone()
+        result = self.cur.fetchall()
         return result
 
     def get_section_student(self, call_no, uni):
         sql = "SELECT call_no, UNI, date FROM students NATURAL JOIN sections where call_no=%s and UNI=%s"
         res = self.cur.execute(sql, args=(call_no, uni))
-        result = self.cur.fetchone()
+        result = self.cur.fetchall()
         return result
 
     def add_section(self, call_no, course_name, enrollment_number):
