@@ -56,8 +56,9 @@ const Home = () => {
     // if (!student) {
     return (
         <div>
-            <Student uni="hw2910" />
-            <Course uni="hw2910" />
+            <h1>Student Attendance System</h1>
+            <Student uni="kjl2185" />
+            <Course uni="kjl2185" />
             {/* play around with the uni value to see the different results*/}
             {/* <Student uni="kjl2185" />
                 <Course uni="kjl2185" /> */}
