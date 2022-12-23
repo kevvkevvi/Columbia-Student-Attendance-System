@@ -67,7 +67,7 @@ class DBResource:
         attendance = dic["attendance"] if "attendance" in dic else None
         limit = dic["limit"] if "limit" in dic else None
         offset = dic["offset"] if "offset" in dic else None
-        sql = "SELECT * FROM class"
+        sql = "SELECT * FROM class "
         if call_no or date or attendance:
             sql += "where"
             if call_no:
@@ -81,6 +81,7 @@ class DBResource:
             sql += " LIMIT {}".format(limit)
         if offset:
             sql += " OFFSET {}".format(offset)
+        print(sql)
         res = self.cur.execute(sql)
         result = self.cur.fetchall()
         return result
@@ -91,7 +92,7 @@ class DBResource:
         uni = dic["uni"] if "uni" in dic else None
         limit = dic["limit"] if "limit" in dic else None
         offset = dic["offset"] if "offset" in dic else None
-        sql = "SELECT * FROM students"
+        sql = "SELECT * FROM students "
         if call_no or date or uni:
             sql += "where"
             if call_no:

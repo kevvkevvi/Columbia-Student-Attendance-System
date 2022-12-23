@@ -74,8 +74,8 @@ def test_class_update():
     print(resp)
 
 def test_student_add():
-    info = dict(uni='zl1133', call_no='CSEE4119', date='2022-12-16')
-    resp = requests.post("http://127.0.0.1:5011/api/students", data=info)
+    info = dict(uni='dt2599', call_no='COMS6156', date='2022-02-13')
+    resp = requests.post("http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/students", data=info)
     if resp.status_code == 200:  # verify valid response code
         print("OK")
     else:
@@ -94,4 +94,4 @@ def test_student_delete():
 
 
 if __name__ == "__main__":
-    test_student_delete()
+    test_student_add()
