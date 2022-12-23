@@ -15,11 +15,17 @@ const Attendance = () => {
     // const uni = location.search.split('uni=')[1];
     // const call_no = location.search.split('call_no=')[1];
 
-    const updateAttendance = async (call_no, date) => {
+    const updateAttendance = async () => {
         try {
-            await axios.put(`http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/sections/${call_no}/class/${date}`, {
-                attendance: 1  // increment attendance by 1
-            });
+            // await axios.put(`http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/sections/${call_no}/class/${date}`, {
+            //     attendance: 1  // increment attendance by 1
+            // });
+            await axios.post('http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/students', qs.stringify({
+                'call_no': call_no,
+                'uni': uni,
+                'date': date
+            }));
+            console.log("Attendance updated");
         } catch (error) {
             console.error(error);
         }
@@ -73,7 +79,7 @@ const Attendance = () => {
                 <div className="attendance" key={record.date}>
                     <p>Date: {record.date}</p>
                     <p>Attendance: {record.attendance}</p>
-                    <button onClick={() => updateAttendance(record.call_no, record.date)}>Check In</button>
+                    <button onClick={() => updateAttendance()}>Check In</button>
                 </div>
             ))}
         </div>
