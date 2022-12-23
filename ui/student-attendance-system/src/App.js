@@ -2,7 +2,7 @@ import React from "react";
 // import { Routes, Route, Router } from 'react-router-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // import { createBrowserHistory } from 'history';
-// import Student from "./components/Student"
+import Student from "./components/Student"
 // import Course from "./components/Course";
 import Home from "./components/Home";
 import Attendance from "./components/Attendance";
@@ -17,6 +17,7 @@ const App = () => {
       <BrowserRouter basename="/">
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route path="/student/:uni" component={Student} />
           <Route path="/attendance/:uni/:call_no" component={Attendance} />
         </Switch>
       </BrowserRouter>
