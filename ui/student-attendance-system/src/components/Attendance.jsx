@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import qs from "qs";
 // import date from "date-and-time";
 // import { useLocation } from "react-router-dom";
 
@@ -9,29 +10,22 @@ const Attendance = () => {
     const { uni, call_no } = useParams();
     // console.log(uni + " " + call_no);
     const [attendance, setAttendance] = useState([]);
+    const date = '2022-02-13';
     // const location = useLocation();
     // const uni = location.search.split('uni=')[1];
     // const call_no = location.search.split('call_no=')[1];
 
-    const updateAttendance = (call_no, uni, date) => {
-        fetch('http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/students', {
-            method: 'POST',
-            body: JSON.stringify({
-                call_no: call_no,
-                uni: uni,
-                date: date
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                // Update the state directly to reflect the changes
-                this.setState({ attendance: data });
+    const updateAttendance = async (call_no, date) => {
+        try {
+            await axios.put(`http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/sections/${call_no}/class/${date}`, {
+                attendance: 1  // increment attendance by 1
             });
+        } catch (error) {
+            console.error(error);
+        }
     }
+
+
 
     useEffect(() => {
         const fetchAttendance = async () => {
@@ -39,14 +33,26 @@ const Attendance = () => {
             // const params = new URLSearchParams(window.location.search);
             // const uni = params.get("uni");
             // const call_no = params.get("call_no");
+
+            // try {
+            //     // await axios.post('http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/class', qs.stringify({
+            //     //     'call_no': call_no,
+            //     //     'date': date,
+            //     //     'attendance': 0
+            //     // }));
+            //     // await axios.post('http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/students', qs.stringify({
+            //     //     'call_no': call_no,
+            //     //     'uni': uni,
+            //     //     'date': date
+            //     // }));
+            //     const response = await axios.get(`http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/sections/${call_no}/students/${uni}`);
+            //     // console.log(response.data)
+            //     setAttendance(response.data);
+            // } catch (error) {
+            //     console.error(error);
+            // }
             try {
-                await axios.post('http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/students', {
-                    call_no: call_no,
-                    uni: uni,
-                    // date: new Date(2022, 2, 13)
-                    date: "20220213"
-                });
-                const response = await axios.get(`http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/sections/${call_no}/students/${uni}`);
+                const response = await axios.get(`http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/sections/${call_no}/class/${date}`);
                 setAttendance(response.data);
             } catch (error) {
                 console.error(error);
@@ -56,16 +62,18 @@ const Attendance = () => {
         fetchAttendance();
     }, [uni, call_no]);
 
-    const currentDate = new Date();
-    const currentAttendance = attendance.filter(record => record.date === currentDate);
+    // const currentDate = new Date();
+    const currentAttendance = attendance.filter(record => record.date === date);
+    console.log(attendance);
+    console.log(currentAttendance);
 
     return (
-        <div>
+        <div className="attendances">
             {currentAttendance.map(record => (
-                <div key={record.date}>
+                <div className="attendance" key={record.date}>
                     <p>Date: {record.date}</p>
                     <p>Attendance: {record.attendance}</p>
-                    <button onClick={() => updateAttendance(record.call_no, record.uni, record.date)}>Check In</button>
+                    <button onClick={() => updateAttendance(record.call_no, record.date)}>Check In</button>
                 </div>
             ))}
         </div>

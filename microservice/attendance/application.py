@@ -88,6 +88,14 @@ def get_section_attendance(call_no, date):  # get <call_no>'s attendance on <dat
     return rsp
 
 
+@app.route("/api/sections/<call_no>/class/<date>", methods=["PUT"])
+def update_section_attendance(call_no, date): # Retrieve the current attendance record
+    attendance_record = DBResource().get_section_attendance(call_no, date)
+    attendance_record['attendance'] += 1  # Increment the attendance count
+    DBResource().update_section_attendance(call_no, date, attendance_record) # Update the attendance record in the database
+    return "SUCCESS"
+
+
 @app.route("/api/sections/<call_no>/class/<date>/students/", methods=["GET"])
 def get_section_class_students(call_no, date):  # get all students' attendance records on <call_no><date>
     result = DBResource().get_section_class_students(call_no, date)
