@@ -39,7 +39,7 @@ const Attendance = () => {
             // const uni = params.get("uni");
             // const call_no = params.get("call_no");
             try {
-                const response = await axios.get(`/api/sections/${call_no}/students/${uni}`);
+                const response = await axios.get(`http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/sections/${call_no}/students/${uni}`);
                 setAttendance(response.data);
             } catch (error) {
                 console.error(error);

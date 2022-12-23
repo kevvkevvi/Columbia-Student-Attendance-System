@@ -14,26 +14,13 @@ import './App.css';
 const App = () => {
   return (
     <div>
-      {/* <Router> */}
-      {/* <Routes> */}
-      <BrowserRouter>
+      <BrowserRouter basename="/">
         <Switch>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/attendance" element={<Attendance />} />
+          <Route exact path="/" component={Home} />
+          <Route path="/attendance/:uni/:call_no" component={Attendance} />
         </Switch>
       </BrowserRouter>
       {/* <Route path="/attendance/:uni/:call_no" element={<Attendance />} /> */}
-      {/* </Routes> */}
-      {/* </Router> */}
-
-      {/* <h1>Student Attendance System</h1>
-      <Student uni="hw2910" />
-      <Course uni="hw2910" /> */}
-      {/* play around with the uni value to see the different results*/}
-      {/* <Student uni="kjl2185" />
-      <Course uni="kjl2185" /> */}
-      {/* <Attendance /> */}
-      {/* </Router> */}
     </div>
   );
 };

@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 const Course = ({ uni }) => {
     const [courses, setCourses] = useState(null);
 
-    const history = useHistory();
+    // const history = useHistory();
 
-    const handleClick = (course) => {
-        history.push(`/attendance?uni=${uni}&call_no=${course.call_no}`);
-        // history.push(`/attendance?uni=${uni}&call_no=${course.call_no}`);
-    };
+    // const handleClick = (course) => {
+    //     history.push(`/attendance/${uni}/${course.call_no}`);
+    //     // history.push(`/attendance?uni=${uni}&call_no=${course.call_no}`);
+    // };
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -27,7 +27,7 @@ const Course = ({ uni }) => {
     }, [uni]);
 
     if (!courses) {
-        return <div>Loading courses...</div>;
+        return <div className="courses">Loading courses...</div>;
     }
 
     console.log(courses);
@@ -43,7 +43,8 @@ const Course = ({ uni }) => {
                 //     <p className="course">{course.call_no}</p>
                 // </div>
                 <div className="courses" key={course.call_no}>
-                    <Link onClick={() => handleClick(course)}>{course.call_no}</Link>
+                    {/* <Link onClick={() => handleClick(course)}>{course.call_no}</Link> */}
+                    <Link to={`/attendance/${uni}/${course.call_no}`}>{course.call_no}</Link>
                 </div>
             ))}
         </div>
