@@ -7,13 +7,14 @@ import axios from "axios";
 
 const Attendance = () => {
     const { uni, call_no } = useParams();
+    // console.log(uni + " " + call_no);
     const [attendance, setAttendance] = useState([]);
     // const location = useLocation();
     // const uni = location.search.split('uni=')[1];
     // const call_no = location.search.split('call_no=')[1];
 
     const updateAttendance = (call_no, uni, date) => {
-        fetch('/api/students', {
+        fetch('http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/students', {
             method: 'POST',
             body: JSON.stringify({
                 call_no: call_no,
@@ -39,6 +40,12 @@ const Attendance = () => {
             // const uni = params.get("uni");
             // const call_no = params.get("call_no");
             try {
+                await axios.post('http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/students', {
+                    call_no: call_no,
+                    uni: uni,
+                    // date: new Date(2022, 2, 13)
+                    date: "20220213"
+                });
                 const response = await axios.get(`http://ec2-44-204-239-194.compute-1.amazonaws.com:5011/api/sections/${call_no}/students/${uni}`);
                 setAttendance(response.data);
             } catch (error) {
