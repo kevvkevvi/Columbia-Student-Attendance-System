@@ -154,6 +154,7 @@ def add_class():  # a section adds a new class
 @app.route("/api/students", methods=["POST"])
 def add_student():  # a student attend a class, the class's attendance number increase 1
     data = request.form
+    print(data)
     result = DBResource().add_student(data['uni'], data['call_no'], data['date'], increase_attendance=True)
     if result:
         rsp = Response(json.dumps(result, cls=DateEncoder), status=200, content_type="application.json")
